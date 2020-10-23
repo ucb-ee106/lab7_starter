@@ -114,11 +114,12 @@ class Stereo_Pointcloud:
             self.left_rect_pub.publish(ros_numpy.msgify(Image, left_undistorted, "mono8"))
             self.right_rect_pub.publish(ros_numpy.msgify(Image, right_undistorted, "mono8"))
             
-            self.create_pointcloud(left_undistorted, right_undistorted, left_intrinsic, right_intrinsic, trans)
+            # Task 1: Uncomment this call to self.process_images. 
+            # self.process_images(left_undistorted, right_undistorted, left_intrinsic, right_intrinsic, trans)
         except (tf2.LookupException, tf2.ConnectivityException, tf2.ExtrapolationException):
             pass
     
-    def create_pointcloud(self, left_image, right_image, left_intrinsic, right_intrinsic, trans):
+    def process_images(self, left_image, right_image, left_intrinsic, right_intrinsic, trans):
         """
         Do fun stuff in lab
         """
