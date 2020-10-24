@@ -51,7 +51,7 @@ def least_squares_triangulate(x_1, x_2, R, T, left_intrinsic, right_intrinsic):
         return None
 
 class Stereo_Pointcloud:
-    def __init__(self, vis=True): 
+    def __init__(self, epipolar_threshold=0.07, vis=True): 
         # creating a BRISK feature dectector
         # First argument is a threshold used by the underlying Harris corner
         # detector. Raising this threshold will give you fewer but higher quality
@@ -59,6 +59,7 @@ class Stereo_Pointcloud:
         self.feature_detector = cv2.BRISK_create(50, octaves=5)	
         
         self.vis = vis
+        self.threshold = epipolar_threshold
 
         # Task 0: Fill in the topic names for the following subscribers.
         left_image_sub = message_filters.Subscriber(TODO, Image, queue_size=10)
@@ -131,7 +132,7 @@ class Stereo_Pointcloud:
     	left_image_matches = np.array([kp1[i.queryIdx].pt for i in matches])
     	right_image_matches = np.array([kp2[i.trainIdx].pt for i in matches])
 
-        threshold = .07
+        threshold = self.threshold
         inlier_mask = np.array(FilterByEpipolarConstraint(left_intrinsic, right_intrinsic, kp1, kp2, R, T, threshold, matches)) == 1
         left_image_masked = np.pad(left_image_matches[inlier_mask], [(0, 0), (0, 1)], mode='constant', constant_values=1)
         right_image_masked = np.pad(right_image_matches[inlier_mask], [(0, 0), (0, 1)], mode='constant', constant_values=1)
@@ -186,5 +187,6 @@ class Stereo_Pointcloud:
 
 if __name__ == "__main__":
     rospy.init_node("Stereo_Pointcloud")
-    node = Stereo_Pointcloud(vis=True)
+    # Task 1: Set epipolar_threshold. This should probably be between 0.05 and 0.15.
+    node = Stereo_Pointcloud(epipolar_threshold=0.07, vis=True)
     rospy.spin()
