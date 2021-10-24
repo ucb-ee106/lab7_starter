@@ -65,7 +65,7 @@ def main():
                 if ROBOT == "baxter":
                     x, y, z = 0.47, -0.85, 0.07
                 else:
-                    x, y, z = 0.8, 0.05, -0.23
+                    x, y, z = 0.8, 0.05, 0.07
                 goal_1 = PoseStamped()
                 goal_1.header.frame_id = "base"
 
