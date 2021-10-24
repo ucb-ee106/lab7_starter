@@ -20,8 +20,11 @@ from moveit_msgs.msg import OrientationConstraint
 from geometry_msgs.msg import PoseStamped
 
 from path_planner import PathPlanner
-from controller import Controller
-
+try:
+    from controller import Controller
+except ImportError:
+    pass
+    
 def main():
     """
     Main Script
